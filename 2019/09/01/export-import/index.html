@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="export, export default, exports, module expoerts的区别export, export default 1、这两个是属于 es6 的模块规范，可用于导出常量，函数，文件，模块等，导入使用 import（也可以是 require）2、在一个文件和模块中，export 可以有多个，但是 export default 只能有一个3、通过 export 导出时，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js 模块引用的相关介绍(export, exports, import等)">
+<meta property="og:url" content="https://bbbigcat.github.io/2019/09/01/export-import/index.html">
+<meta property="og:site_name" content="个人小站">
+<meta property="og:description" content="export, export default, exports, module expoerts的区别export, export default 1、这两个是属于 es6 的模块规范，可用于导出常量，函数，文件，模块等，导入使用 import（也可以是 require）2、在一个文件和模块中，export 可以有多个，但是 export default 只能有一个3、通过 export 导出时，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-24T07:19:34.526Z">
+<meta property="article:author" content="bbbigcat">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>js 模块引用的相关介绍(export, exports, import等)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/categories/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2019/09/01/async-get-data/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2019/09/01/yarn-npm/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://bbbigcat.github.io/2019/09/01/export-import/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://bbbigcat.github.io/2019/09/01/export-import/&text=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bbbigcat.github.io/2019/09/01/export-import/&is_video=false&description=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=js 模块引用的相关介绍(export, exports, import等)&body=Check out this article: https://bbbigcat.github.io/2019/09/01/export-import/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://bbbigcat.github.io/2019/09/01/export-import/&name=js 模块引用的相关介绍(export, exports, import等)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://bbbigcat.github.io/2019/09/01/export-import/&t=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#export-export-default-exports-module-expoerts%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">export, export default, exports, module expoerts的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%9C%A8-h5-%E9%A1%B5%E9%9D%A2%E4%B8%AD%E4%BD%BF%E7%94%A8-import-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">直接在 h5 页面中使用 import 的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commonjs-%E7%9A%84%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0"><span class="toc-number">3.</span> <span class="toc-text">commonjs 的扩展学习</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E6%A8%A1%E5%9D%97%E5%8E%9F%E7%90%86"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">深入了解模块原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">注意</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        js 模块引用的相关介绍(export, exports, import等)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">bbbigcat</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-31T16:00:00.000Z" class="dt-published" itemprop="datePublished">2019-09-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/archives/">archives</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="export-export-default-exports-module-expoerts的区别"><a href="#export-export-default-exports-module-expoerts的区别" class="headerlink" title="export, export default, exports, module expoerts的区别"></a>export, export default, exports, module expoerts的区别</h2><p><strong>export, export default</strong></p>
+<p>1、这两个是属于 es6 的模块规范，可用于导出常量，函数，文件，模块等，导入使用 import（也可以是 require）<br>2、在一个文件和模块中，export 可以有多个，但是 export default 只能有一个<br>3、通过 export 导出时，在导入时要加入 {}， export default 则不需要<br>4、输出单个值用 export default，多个值用 export<br>5、两个不能一起用</p>
+<p><strong>exports, module.exports</strong><br>1、这两个是 node 的语法，属于 CommonJS 模块规范，导入需要 require<br>2、</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var exports = module.exports = &#123;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Node 应用由模块构成，node 为每一个模块提供一个 exports 变量，指向 module.exports<br>3、可以在 exports 对象上添加方法，表示对外输出的接口，如同在 module.exports 上添加一样<br>4、不能直接将 exports 变量指向一个值，会切断与 module.exports 之间的联系</p>
+<h2 id="直接在-h5-页面中使用-import-的问题"><a href="#直接在-h5-页面中使用-import-的问题" class="headerlink" title="直接在 h5 页面中使用 import 的问题"></a>直接在 h5 页面中使用 import 的问题</h2><blockquote>
+<p>在 h5 页面中使用 import 时，会一直报错 <code>Unexpected identifier</code> 这种错误指的是书写不规范的原因</p>
+</blockquote>
+<p><strong>解决办法</strong>：</p>
+<ol>
+<li>在 h5 页面的中的 script 标签设置 : <code>&lt;script type=&#39;module&#39;&gt;</code>, 然后开服务器</li>
+<li>使用 beble 编译成 es5</li>
+</ol>
+<h2 id="commonjs-的扩展学习"><a href="#commonjs-的扩展学习" class="headerlink" title="commonjs 的扩展学习"></a>commonjs 的扩展学习</h2><p><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1022910821149312/1023027697415616">廖雪峰 JavaScript 教程</a></p>
+<blockquote>
+<p>模块：在 node 环境中，一个 .js 文件就称为一个模块(module)，使用模块大大提高了代码的可维护性，也避免了函数名和变量名的冲突，相同名字的函数和变量完全可以存在不同模块中。</p>
+</blockquote>
+<blockquote>
+<p>模块的加载机制被称为 CommonJS 规范。</p>
+</blockquote>
+<ul>
+<li>在这个规范下，每一个 .js 都是一个模块，他们内部各自使用的变量名和函数名都不冲突。</li>
+<li>一个模块想要对外暴露变量(函数也是变量)，可以用 module.export &#x3D; veriable，一个模块想要引用其他模块暴露的变量，用 var ref &#x3D; require(‘module_name’)，就拿到了引用模块的变量</li>
+</ul>
+<h5 id="深入了解模块原理"><a href="#深入了解模块原理" class="headerlink" title="深入了解模块原理"></a>深入了解模块原理</h5><blockquote>
+<p>JavaScript 语言本身并没有一种模块机制来保证不同模块可以使用相同的变量(全局变量)名。</p>
+</blockquote>
+<p><strong>node.js 是如何实现的？</strong></p>
+<blockquote>
+<p>实现<code>模块</code>的功能，并不需要语法层面的支持。Node.js 也并不会增加任何 JavaScript 语法，实现<code>模块</code>的主要奥妙就在于 JavaScript 是一直函数式变成语言，支持闭包。如果把一段 JavaScript 用函数包装起来，这段代码的所有<code>全局</code>变量就变成了函数的内部变量。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 编写 hello.js</span></span><br><span class="line"><span class="keyword">var</span> s = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;world&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(s + <span class="string">&#x27;&#x27;</span> + name + <span class="string">&#x27;!&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Node.js 加载了 hello.js 后，它可以把代码包装一下，就变成了这样执行</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">function</span> (<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> s = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;world&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(s + <span class="string">&#x27;&#x27;</span> + name + <span class="string">&#x27;!&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>这样一来，原来的全局变量 s 现在变成了匿名函数内部的局部变量。如果 Node.js 继续加载其他模块，这些模块中定义的“全局”变量 s 也互干扰了。</p>
+<blockquote>
+<p>模块的输出 <code>module.exports</code> 怎么实现<br>准备一个对象 <code>module</code></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 准备 module 对象</span></span><br><span class="line"><span class="keyword">var</span> <span class="variable language_">module</span> = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="string">&#x27;hello&#x27;</span>,</span><br><span class="line">  <span class="attr">exports</span>: &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> load = <span class="keyword">function</span> (<span class="params"><span class="variable language_">module</span></span>)&#123;</span><br><span class="line">  <span class="comment">// 读取的 hello.js 代码</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">greet</span>(<span class="params">name</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello, &#x27;</span> + name + <span class="string">&#x27;!&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="variable language_">module</span>.<span class="property">exports</span> = great;</span><br><span class="line">  <span class="comment">// hello.js 代码结束</span></span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">module</span>.<span class="property">exports</span>;</span><br><span class="line">&#125;；</span><br><span class="line"><span class="keyword">var</span> exported = <span class="title function_">load</span>(<span class="variable language_">module</span>);</span><br><span class="line"><span class="comment">// 保存 module</span></span><br><span class="line"><span class="title function_">save</span>(<span class="variable language_">module</span>, exported);</span><br></pre></td></tr></table></figure>
+
+<p>可见，变量 <code>module</code> 是 Node 在加载 js 文件前准备的一个变量，并将其传入加载函数，我们在 hello.js 中可以直接使用变量 <code>module</code> 的原因就在于它实际上是函数的一个参数：</p>
+<p><code>module.exports = greet</code></p>
+<p>通过把参数 <code>module</code> 传递给 <code>load()</code> 函数，hello.js 就顺利的把一个变量传递给了 Node 环境，Node 会把 <code>module</code> 变量保存到某个地方。</p>
+<p>由于 Node 保存了所有导入的 module ，当我们用 require() 获取 module 时，Node 找到对用的 module，把这个 module 的 exports 变量返回，这样，另一个模块就顺利的拿到了模块的输出。</p>
+<blockquote>
+<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5></blockquote>
+<p>如果要输出一个键值对象 {}， 可以利用 exports 这个已存在的空对象 {}，并继续在上面添加新的键值。<br>如果要输出一个函数或数组，必须直接对 module.exports 对象赋值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如以下情况</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123; <span class="keyword">return</span> <span class="string">&#x27;foo&#x27;</span>; &#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">hello</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello, world!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">greet</span>(<span class="params">name</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello, &#x27;</span> + name + <span class="string">&#x27;!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">hello</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello, world!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 使用 exports</span></span><br><span class="line"><span class="built_in">exports</span>.<span class="property">hello</span> = hello;</span><br><span class="line"><span class="built_in">exports</span>.<span class="property">greet</span> = greet;</span><br><span class="line"><span class="comment">// 使用 module.exports</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">hello</span>: hello,</span><br><span class="line">    <span class="attr">greet</span>: greet</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/categories/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#export-export-default-exports-module-expoerts%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">export, export default, exports, module expoerts的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%9C%A8-h5-%E9%A1%B5%E9%9D%A2%E4%B8%AD%E4%BD%BF%E7%94%A8-import-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">直接在 h5 页面中使用 import 的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commonjs-%E7%9A%84%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0"><span class="toc-number">3.</span> <span class="toc-text">commonjs 的扩展学习</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E6%A8%A1%E5%9D%97%E5%8E%9F%E7%90%86"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">深入了解模块原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">注意</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://bbbigcat.github.io/2019/09/01/export-import/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://bbbigcat.github.io/2019/09/01/export-import/&text=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bbbigcat.github.io/2019/09/01/export-import/&is_video=false&description=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=js 模块引用的相关介绍(export, exports, import等)&body=Check out this article: https://bbbigcat.github.io/2019/09/01/export-import/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://bbbigcat.github.io/2019/09/01/export-import/&title=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://bbbigcat.github.io/2019/09/01/export-import/&name=js 模块引用的相关介绍(export, exports, import等)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://bbbigcat.github.io/2019/09/01/export-import/&t=js 模块引用的相关介绍(export, exports, import等)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    bbbigcat
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/categories/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

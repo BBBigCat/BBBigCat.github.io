@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="买了台式机后，一直没有怎么用，今天正好得闲，花了点时间捣鼓了下，想配置成可以开发用的机器，奈何好久没有倒腾 windows 系统了，也花了不少的时间。 终端 - windows terminal因为用惯了 mac 上的 zsh，一时间有点不能接受 cmd 的控制台，后来发现 windows 新增了一个 power shell，集成了 cmd 的功能，界面也比 cmd 好了一点（换了个蓝色背景？：|">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows 开发环境简单配置">
+<meta property="og:url" content="https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="个人小站">
+<meta property="og:description" content="买了台式机后，一直没有怎么用，今天正好得闲，花了点时间捣鼓了下，想配置成可以开发用的机器，奈何好久没有倒腾 windows 系统了，也花了不少的时间。 终端 - windows terminal因为用惯了 mac 上的 zsh，一时间有点不能接受 cmd 的控制台，后来发现 windows 新增了一个 power shell，集成了 cmd 的功能，界面也比 cmd 好了一点（换了个蓝色背景？：|">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-08T08:34:12.000Z">
+<meta property="article:modified_time" content="2023-08-24T08:30:40.282Z">
+<meta property="article:author" content="bbbigcat">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>windows 开发环境简单配置</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/categories/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2020/11/07/about-git-2/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&text=windows 开发环境简单配置"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&is_video=false&description=windows 开发环境简单配置"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=windows 开发环境简单配置&body=Check out this article: https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&name=windows 开发环境简单配置&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&t=windows 开发环境简单配置"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%88%E7%AB%AF-windows-terminal"><span class="toc-number">1.</span> <span class="toc-text">终端 - windows terminal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7-chocolatey"><span class="toc-number">2.</span> <span class="toc-text">包管理工具 - chocolatey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Github-ssh-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">Github ssh 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-%E5%85%A8%E5%B1%80%E8%84%9A%E6%9C%AC%E7%9A%84%E6%89%A7%E8%A1%8C"><span class="toc-number">4.</span> <span class="toc-text">node 全局脚本的执行</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        windows 开发环境简单配置
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">bbbigcat</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-11-08T08:34:12.000Z" class="dt-published" itemprop="datePublished">2020-11-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/archives/">archives</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>买了台式机后，一直没有怎么用，今天正好得闲，花了点时间捣鼓了下，想配置成可以开发用的机器，奈何好久没有倒腾 <code>windows</code> 系统了，也花了不少的时间。</p>
+<h3 id="终端-windows-terminal"><a href="#终端-windows-terminal" class="headerlink" title="终端 - windows terminal"></a>终端 - windows terminal</h3><p>因为用惯了 <code>mac</code> 上的 <code>zsh</code>，一时间有点不能接受 <code>cmd</code> 的控制台，后来发现 windows 新增了一个 <code>power shell</code>，集成了 <code>cmd</code> 的功能，界面也比 <code>cmd</code> 好了一点（换了个蓝色背景？：|）所以又花了点时间搜索了下，发现了 <code>windows terminal</code>，集成了 <code>power shell</code> 和 <code>cmd</code>，还可通过配置文件定制主题和其它一些内容，还是很不错的。</p>
+<h3 id="包管理工具-chocolatey"><a href="#包管理工具-chocolatey" class="headerlink" title="包管理工具 - chocolatey"></a>包管理工具 - <a target="_blank" rel="noopener" href="https://www.chocolatey.org/">chocolatey</a></h3><p>这是一个包管理的软件，功能很强大，简直不能再省劲，之前安装 <code>node</code>，不对劲就需要自己去配置环境变量，而有了包管理工具，很多内容只需要一键安装就行了。不限于 <code>node</code>、<code>Git</code>这样的工具，还可以直接安装软件，然后统一进行管理。（建议安装 <code>chocolatey gui</code> 图形化管理软件，很直观方便）。<code>chocolatey</code>，彳亍！</p>
+<blockquote>
+<p>安装</p>
+</blockquote>
+<ol>
+<li>在官网点击 <code>install</code> 进入下载页，赋值命令，在 <code>power shell</code>中执行</li>
+<li>安装成功后，输入命令安装其他。如：<code>choco install chocolateygui</code></li>
+</ol>
+<h3 id="Github-ssh-配置"><a href="#Github-ssh-配置" class="headerlink" title="Github ssh 配置"></a>Github ssh 配置</h3><p>为了能直接通过 <code>ssh</code> 方式克隆项目，所以配置了下 <code>github</code> 的 <code>ssh</code></p>
+<blockquote>
+<p>犯傻过程</p>
+</blockquote>
+<p>在 <code>cmd</code> 中去创建 <code>ssh</code>，应该在 <code>git bash</code> 终端中去执行</p>
+<blockquote>
+<p>学习</p>
+</blockquote>
+<p><code>ssh -keygen -t rsa -C &#39;xxx@email.com&#39;</code> 这里 -C 后边不一定非要是邮箱，只是一个注释信息，一般与 Git 账户保持一致是为了区分公钥被绑在那个 Git 账户上</p>
+<p>输入该命令后一直回车即可，然后再 <code>.ssh</code> 问价夹中把 <code>.pub</code> 的内容复制到 <code>github</code> 中即可</p>
+<blockquote>
+<p>尝试连接</p>
+</blockquote>
+<p><code>ssh -T git@github.com</code><br>执行后配置全局信息后即可<br><code>git config --global user.name &#39;xx&#39;</code><br><code>git config --global user,email &#39;xx</code></p>
+<h3 id="node-全局脚本的执行"><a href="#node-全局脚本的执行" class="headerlink" title="node 全局脚本的执行"></a>node 全局脚本的执行</h3><p><code>git</code> 联通后，克隆了一个自己的博客项目（利用 <code>hexo</code> 搭建的静态博客）,在执行 <code>hexo</code> 的全局命令时报错，报错内容为 <code>在此系统上禁止运行脚本</code></p>
+<blockquote>
+<p>解决办法</p>
+</blockquote>
+<ol>
+<li>以管理员身份运行 power shell</li>
+<li>执行 <code>get-ExecutionPolicy</code>，显示 <code>Restricted，表示状态是禁止的</code></li>
+<li>执行 <code>set-ExecutionPolicy RemoteSigned</code></li>
+<li>再执行 <code>get-ExecutionPolicy</code>，就显示 <code>RemoteSigned</code></li>
+<li>现在可以使用脚本了</li>
+</ol>
+<p><code>windows</code>！彳亍 了~</p>
+<p>因为是前端开发，暂时先装这么多已经够用了，就这样也花费将近一下午的时间，后续安装后端依赖内容时，再补充。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/categories/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%88%E7%AB%AF-windows-terminal"><span class="toc-number">1.</span> <span class="toc-text">终端 - windows terminal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7-chocolatey"><span class="toc-number">2.</span> <span class="toc-text">包管理工具 - chocolatey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Github-ssh-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">Github ssh 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-%E5%85%A8%E5%B1%80%E8%84%9A%E6%9C%AC%E7%9A%84%E6%89%A7%E8%A1%8C"><span class="toc-number">4.</span> <span class="toc-text">node 全局脚本的执行</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&text=windows 开发环境简单配置"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&is_video=false&description=windows 开发环境简单配置"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=windows 开发环境简单配置&body=Check out this article: https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&title=windows 开发环境简单配置"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&name=windows 开发环境简单配置&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://bbbigcat.github.io/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/&t=windows 开发环境简单配置"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    bbbigcat
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/categories/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

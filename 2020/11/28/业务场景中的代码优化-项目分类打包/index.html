@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言在工作中，遇到了一个比较特殊的场景，需要针对不同的需求开发两套不同的系统，但是两套系统的初期版本功能基本一致，只有一些细微的差异，在这种场景下，决定使用一套项目代码分类打包的方案 实现分类打包这里其实是由使用 Webpack 时的开发环境和生产环境的例子得来的，根据 package.json 中不同的命令，执行或打包不同的代码。由此为思路，我找到了实现这种功能的插件 DefinePlugin。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="业务场景中的代码优化-项目分类打包">
+<meta property="og:url" content="https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/index.html">
+<meta property="og:site_name" content="个人小站">
+<meta property="og:description" content="前言在工作中，遇到了一个比较特殊的场景，需要针对不同的需求开发两套不同的系统，但是两套系统的初期版本功能基本一致，只有一些细微的差异，在这种场景下，决定使用一套项目代码分类打包的方案 实现分类打包这里其实是由使用 Webpack 时的开发环境和生产环境的例子得来的，根据 package.json 中不同的命令，执行或打包不同的代码。由此为思路，我找到了实现这种功能的插件 DefinePlugin。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-28T08:03:41.000Z">
+<meta property="article:modified_time" content="2023-08-24T07:19:57.457Z">
+<meta property="article:author" content="bbbigcat">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>业务场景中的代码优化-项目分类打包</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/categories/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2020/12/26/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E6%9D%83%E9%99%90%E4%BC%98%E5%8C%96/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2020/11/08/windows-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&text=业务场景中的代码优化-项目分类打包"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&is_video=false&description=业务场景中的代码优化-项目分类打包"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=业务场景中的代码优化-项目分类打包&body=Check out this article: https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&name=业务场景中的代码优化-项目分类打包&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&t=业务场景中的代码优化-项目分类打包"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85"><span class="toc-number">2.</span> <span class="toc-text">实现分类打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">4.</span> <span class="toc-text">注意</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        业务场景中的代码优化-项目分类打包
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">bbbigcat</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-11-28T08:03:41.000Z" class="dt-published" itemprop="datePublished">2020-11-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/archives/">archives</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在工作中，遇到了一个比较特殊的场景，需要针对不同的需求开发两套不同的系统，但是两套系统的初期版本功能基本一致，只有一些细微的差异，在这种场景下，决定使用一套项目代码分类打包的方案</p>
+<h2 id="实现分类打包"><a href="#实现分类打包" class="headerlink" title="实现分类打包"></a>实现分类打包</h2><p>这里其实是由使用 <code>Webpack</code> 时的开发环境和生产环境的例子得来的，根据 package.json 中不同的命令，执行或打包不同的代码。由此为思路，我找到了实现这种功能的插件 <a target="_blank" rel="noopener" href="https://webpack.js.org/plugins/define-plugin/">DefinePlugin</a>。</p>
+<p><strong>DefinePlugin</strong> 允许我们创建一个在编译时使用的全局变量配置，该全局变量可以提供给代码中使用，通过判断可以实现开发环境的代码不在生产环境中输出。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> webpack.<span class="title class_">DefinePlugin</span>(&#123;</span><br><span class="line">  <span class="attr">PRODUCTION</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="literal">true</span>),</span><br><span class="line">  <span class="attr">VERSION</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="string">&#x27;5fa3b9&#x27;</span>),</span><br><span class="line">  <span class="attr">BROWSER_SUPPORTS_HTML5</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">TWO</span>: <span class="string">&#x27;1+1&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;typeof window&#x27;</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="string">&#x27;object&#x27;</span>),</span><br><span class="line">  <span class="string">&#x27;process.env.NODE_ENV&#x27;</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(process.<span class="property">env</span>.<span class="property">NODE_ENV</span>),</span><br><span class="line">  <span class="string">&#x27;process.env.TEST&#x27;</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(process.<span class="property">env</span>.<span class="property">TEST</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在 webpack 的打包中，会经历几个阶段</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始代码</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable constant_">PRODUCTION</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;生产环境&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过 webpack 后</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;生产环境&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 再通过最小化处理后</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;生产环境&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>知道了如何区分，接下来就是增加编译时的判断，可以看到配置中可以使用 node 的 process 全局对象获取值，所以我们在执行 node 命令的时候，对配置的变量进行赋值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;script&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;start&quot;</span>: <span class="string">&quot;TEST=true yarn start&quot;</span>,</span><br><span class="line">        <span class="string">&quot;build&quot;</span>: <span class="string">&quot;TEST=true yarn build&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由此，通过不同命令传入时的值，在代码的编译过程中，也会被编译成具体的内容。</p>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>在代码中实际进行判断的时候，我为了方便（不用输入太长的字符串判断），直接对取到的内容赋值给了变量</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="variable constant_">TEST</span> = process.<span class="property">env</span>.<span class="property">TEST</span> === <span class="string">&#x27;true&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实际代码</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable constant_">TEST</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;测试&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打包后 伪代码</span></span><br><span class="line"><span class="keyword">if</span>(Y.<span class="property">a</span>) <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;测试&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 期望</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;测试&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在最后的打包文件后，并没出现最小化的情况。<br>因为这里违背了 DefinePlugin 的用法， DefinePlugin 是直接对文本进行替换，再进行最小化操作，这里通过变量的行为，就达不到这样的效果了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确写法</span></span><br><span class="line"><span class="keyword">if</span> (process.<span class="property">env</span>.<span class="property">TEST</span> === <span class="string">&#x27;true&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;测试&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还是有点复杂，这里可以用这种方式简化下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在项目中直接使用 TEST: boolean 即可</span></span><br><span class="line"><span class="keyword">new</span> webpack.<span class="title class_">DefinePlugin</span>(&#123;</span><br><span class="line">  <span class="string">&#x27;TEST&#x27;</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(process.<span class="property">env</span>.<span class="property">TEST</span>) === <span class="string">&#x27;true&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>由于插件会直接替换文本，因此为其提供的值必须在字符串本身内部包含实际引号。通常，这可以通过使用备用引号（例如’”production”‘）或使用 JSON.stringify 来完成。<br>字符串化（’production’） – 摘自官方文档<br>简单说就是要用字符串。拙见：)</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/categories/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85"><span class="toc-number">2.</span> <span class="toc-text">实现分类打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">4.</span> <span class="toc-text">注意</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&text=业务场景中的代码优化-项目分类打包"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&is_video=false&description=业务场景中的代码优化-项目分类打包"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=业务场景中的代码优化-项目分类打包&body=Check out this article: https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&title=业务场景中的代码优化-项目分类打包"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&name=业务场景中的代码优化-项目分类打包&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://bbbigcat.github.io/2020/11/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96-%E9%A1%B9%E7%9B%AE%E5%88%86%E7%B1%BB%E6%89%93%E5%8C%85/&t=业务场景中的代码优化-项目分类打包"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    bbbigcat
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/categories/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>
