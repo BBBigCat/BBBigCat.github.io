@@ -1,9 +1,9 @@
 ---
 title: hexo 博客搭建指北
+date: 2021-01-15 15:41:04
 description: archives
 tags: 
   - blog
-date: 2021-01-15 15:41:04
 ---
 
 ## 前言
@@ -61,7 +61,7 @@ description: 目录名
 首先是去申请站长的时候（百度站长）
 
 1. 会要求补全信息（强行收集个人信息），包括手机号，qq 号和微信号
-2. 输入自己的站点，就是 github page 的地址，这里有个地方一定要注意，github page 项目的名字一定要和 github 的名字一样，而且在 hexo 静态博客中，根目录一定要是 `/`，要保证输入 github page 的地址就直接可以访问到内容，比如 github 用户 xxx，他的 github page 项目是 xxx.github.io，对应的网址是 <https://jack.github.io，这样就可以了>
+2. 输入自己的站点，就是 github page 的地址，这里有个地方一定要注意，github page 项目的名字一定要和 github 的名字一样，而且在 hexo 静态博客中，跟目录一定是斜杠，要保证输入 github page 的地址就直接可以访问到内容，比如 github 用户 xxx，他的 github page 项目是 xxx.github.io，对应的网址是 `https://jack.github.io`，这样就可以了
 3. 验证网页。会提供三种方式验证，很简单
 4. 成功后就可以去拿到 token 了
 
