@@ -1,15 +1,10 @@
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
-interface Data {
-    slug: string;
-    title: string;
-    url: string;
-    date: string;
-}
+import { ContentData } from '../typings';
 
 interface ListProps {
-    data: Data[];
+    data: ContentData[];
     className?: string;
 }
 
